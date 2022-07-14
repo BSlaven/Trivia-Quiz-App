@@ -5,7 +5,7 @@ import quizSlice from '../slices/quizSlice';
 export const store = configureStore({
   reducer: {
     // modalSlice,
-    playerSlice,
-    quizSlice
+    player: playerSlice,
+    quiz: quizSlice
   },
 });
