@@ -9,7 +9,7 @@ const Home = () => {
         <span className="question-number fifteen">15</span>
         <span className="question-number twenty">20</span>
       </div>
-      <button className="start-game-btn">Start Game</button>
+      <button className="start-game-btn">Start Quiz</button>
     </div>
   )
 }
