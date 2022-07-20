@@ -7,7 +7,7 @@ const Home = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { numberOfQuestions } = useSelector(store => store.quiz);
+  const { numberOfQuestions, selectedNumber } = useSelector(store => store.quiz);
 
   const startQuizHandler = () => {
     navigate('/quiz');
@@ -23,7 +23,7 @@ const Home = () => {
       <div className="question-number-container">
         {numberOfQuestions && numberOfQuestions.map(option => (
           <span
-            className="question-number"
+            className={`${selectedNumber === option ? 'question-number selected' : 'question-number'}`}
             onClick={() => selectNumberOfQuestions(option)}
             key={option}>
             {option}
