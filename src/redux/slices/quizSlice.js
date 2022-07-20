@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-  numberOfQuestions: [ 10, 13, 15 ],
+  numberOfQuestions: [ 10, 15, 20 ],
   selectedNumber: 10
 }
 
