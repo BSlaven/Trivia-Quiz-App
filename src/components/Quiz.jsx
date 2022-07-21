@@ -16,7 +16,7 @@ const Quiz = () => {
         <div className="answers-container">
           <p className="answer">Odgovor 1</p>
           <p className="answer correct">Odgovor 2</p>
-          <p className="answer">Odgovor 3</p>
+          <p className="answer wrong">Odgovor 3</p>
           <p className="answer">Odgovor 4</p>
         </div>
       </div>
