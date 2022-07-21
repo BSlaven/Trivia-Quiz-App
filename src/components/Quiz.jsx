@@ -12,7 +12,7 @@ const Quiz = () => {
   return (
     <main className="main">
       <div className="question-container">
-        <h3 className="question-text">Ovo je prvo pitanje</h3>
+        <h3 className="question-text">Ovo je prvo pitanje, pa tako još jednom?</h3>
         <div className="answers-container">
           <p className="answer">Odgovor 1</p>
           <p className="answer correct">Odgovor 2</p>
