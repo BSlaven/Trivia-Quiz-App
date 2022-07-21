@@ -1,3 +1,4 @@
+// import { useEffect } from "react";
 import { useNavigate } from "react-router"; 
 
 const Quiz = () => {
@@ -9,10 +10,18 @@ const Quiz = () => {
   }
   
   return (
-    <>
-      <div>Quiz component</div>
-      <button onClick={routeBackHome}>back to home</button>
-    </>
+    <main className="main">
+      <div className="question-container">
+        <h3 className="question-text">Ovo je prvo pitanje, pa tako još jednom?</h3>
+        <div className="answers-container">
+          <p className="answer">Odgovor 1</p>
+          <p className="answer correct">Odgovor 2</p>
+          <p className="answer wrong">Odgovor 3</p>
+          <p className="answer">Odgovor 4</p>
+        </div>
+      </div>
+      <button className="quit-btn" onClick={routeBackHome}>quit</button>
+    </main>
   )
 }
 
