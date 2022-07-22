@@ -116,10 +116,9 @@
 }
 
 .question-text {
-  color: rgb(0, 18, 51);
+  color: hsl(219, 100%, 10%);
   font-size: 1.2rem;
   text-align: center;
-  /* text-transform: uppercase; */
   line-height: 1.2;
 }
 
@@ -132,7 +131,6 @@
 }
 
 .answer {
-  background-color: hsl(234, 100%, 90%);
   background-color: hsl(150, 100%, 93%);
   width: 200px;
   padding: 0.5rem 0.8rem;
