@@ -1,12 +1,16 @@
 // import { useEffect } from "react";
 import { useNavigate } from "react-router"; 
+import { setSelectedNumberOfQuestions } from "../redux/slices/quizSlice";
+import { useDispatch } from "react-redux/es/exports"; 
 
 const Quiz = () => {
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const routeBackHome = () => {
     navigate('/');
+    dispatch(setSelectedNumberOfQuestions({ number: 10 }));
   }
   
   return (
