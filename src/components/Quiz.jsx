@@ -1,4 +1,4 @@
-// import { useEffect } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router"; 
 import { setSelectedNumberOfQuestions } from "../redux/slices/quizSlice";
 import { useDispatch } from "react-redux/es/exports"; 
@@ -6,10 +6,10 @@ import data from '../data.json'
 
 const Quiz = () => {
 
-  console.log(data)
-
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  const [ questions, setQuestions ] = useState(data);
 
   const routeBackHome = () => {
     navigate('/');
