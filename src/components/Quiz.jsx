@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router"; 
 import { setNumberOfQuestions, clearQuestions } from "../redux/slices/quizSlice";
 import { useDispatch } from "react-redux/es/exports"; 
@@ -11,9 +11,18 @@ const Quiz = () => {
 
   const [ questions, setQuestions ] = useState(data.results);
   const [ currentIndex, setCurrentIndex ] = useState(1);
-  const [ currentQuestion, setCurrentQuestion ] = useState(questions[currentIndex])
+  const [ currentQuestion, setCurrentQuestion ] = useState(questions[currentIndex]);
+  const [ answers, setAnswers ] = useState(null);
 
-  const routeBackHome = () => {
+  useEffect(() => {
+    setCurrentQuestion(questions[currentIndex]);
+  }, [currentIndex]);
+
+  const combineAnswers = (correct, incorrect) => {
+    
+  }
+  
+  function routeBackHome() {
     navigate('/');
     dispatch(setNumberOfQuestions({ number: 10 }));
     dispatch(clearQuestions());
