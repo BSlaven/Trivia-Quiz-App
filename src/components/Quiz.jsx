@@ -18,8 +18,16 @@ const Quiz = () => {
     setCurrentQuestion(questions[currentIndex]);
   }, [currentIndex]);
 
-  const combineAnswers = (correct, incorrect) => {
-    
+  useEffect(() => {
+    const allAnswers = combineAnswers(currentQuestion)
+    setAnswers(allAnswers);
+  }, [currentQuestion]);
+
+  const combineAnswers = ({ correct_answer, incorrect_answers }) => {
+    const newArray = [...incorrect_answers];
+    newArray.push(correct_answer);
+    newArray.sort(() => (Math.random() > 0.5 ? 1 : -1));
+    return newArray;
   }
   
   function routeBackHome() {
@@ -33,7 +41,7 @@ const Quiz = () => {
       <div className="question-container">
         <h3 className="question-text">{currentQuestion.question}</h3>
         <div className="answers-container">
-          {currentQuestion.incorrect_answers && currentQuestion.incorrect_answers.map(answer => (
+          {answers && answers.map(answer => (
             <span className="answer" key={answer}>{answer}</span>
           ))}
         </div>
