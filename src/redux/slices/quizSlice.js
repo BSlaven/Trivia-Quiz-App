@@ -2,7 +2,8 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   numberOfQuestions: [ 10, 15, 20 ],
-  selectedNumber: 10
+  selectedNumber: 10,
+  questions: []
 }
 
 const quizSlice = createSlice({
@@ -11,10 +12,13 @@ const quizSlice = createSlice({
   reducers: {
     setSelectedNumberOfQuestions: (state, action) => {
       state.selectedNumber = action.payload.number;
+    },
+    clearQuestions: (state) => {
+      state.questions = [];
     }
   }
 })
 
-export const { setSelectedNumberOfQuestions } = quizSlice.actions;
+export const { setSelectedNumberOfQuestions, clearQuestions } = quizSlice.actions;
 
 export default quizSlice.reducer;
