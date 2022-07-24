@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router"; 
-import { setSelectedNumberOfQuestions } from "../redux/slices/quizSlice";
+import { setSelectedNumberOfQuestions, clearQuestions } from "../redux/slices/quizSlice";
 import { useDispatch } from "react-redux/es/exports"; 
 import data from '../data.json'
 
@@ -16,6 +16,7 @@ const Quiz = () => {
   const routeBackHome = () => {
     navigate('/');
     dispatch(setSelectedNumberOfQuestions({ number: 10 }));
+    dispatch(clearQuestions());
   }
   
   return (
