@@ -10,7 +10,7 @@ const quizSlice = createSlice({
   name: 'quiz',
   initialState,
   reducers: {
-    setSelectedNumberOfQuestions: (state, action) => {
+    setNumberOfQuestions: (state, action) => {
       state.selectedNumber = action.payload.number;
     },
     clearQuestions: (state) => {
@@ -19,6 +19,6 @@ const quizSlice = createSlice({
   }
 })
 
-export const { setSelectedNumberOfQuestions, clearQuestions } = quizSlice.actions;
+export const { setNumberOfQuestions, clearQuestions } = quizSlice.actions;
 
 export default quizSlice.reducer;
