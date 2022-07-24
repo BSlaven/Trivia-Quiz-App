@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
-import { setSelectedNumberOfQuestions } from "../redux/slices/quizSlice";
+import { setNumberOfQuestions } from "../redux/slices/quizSlice";
 
 const Home = () => {
 
@@ -14,7 +14,7 @@ const Home = () => {
   }
 
   const selectNumberOfQuestions = number => {
-    dispatch(setSelectedNumberOfQuestions({ number }))
+    dispatch(setNumberOfQuestions({ number }))
   }
   
   return (
