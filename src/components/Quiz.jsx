@@ -8,7 +8,7 @@ const Quiz = () => {
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const answerRef = useRef(null);
+  const answerRefs = useRef([]);
 
   const [ questions, setQuestions ] = useState(data.results);
   const [ currentIndex, setCurrentIndex ] = useState(1);
@@ -37,11 +37,11 @@ const Quiz = () => {
     dispatch(clearQuestions());
   }
 
-  const answerClickHandler = (answer) => {
+  const answerClickHandler = (answer, index) => {
     if(answer === currentQuestion.correct_answer) {
-      console.log('izabrao si tačan odgovor');
+      answerRefs.current[index].classList.add('correct');
     } else {
-      console.log('izabrao si pogrešan odgovor');
+      answerRefs.current[index].classList.add('wrong');
     }
   }
   
@@ -50,11 +50,12 @@ const Quiz = () => {
       <div className="question-container">
         <h3 className="question-text">{currentQuestion.question}</h3>
         <div className="answers-container">
-          {answers && answers.map(answer => (
+          {answers && answers.map((answer, index) => (
             <span 
               className="answer"
+              ref={el => answerRefs.current[index] = el}
               key={answer}
-              onClick={() => answerClickHandler(answer)}>
+              onClick={() => answerClickHandler(answer, index)}>
                 {answer}
             </span>
           ))}
