@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router"; 
 import { setNumberOfQuestions, clearQuestions } from "../redux/slices/quizSlice";
 import { useDispatch } from "react-redux/es/exports"; 
@@ -8,6 +8,7 @@ const Quiz = () => {
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const answerRef = useRef(null);
 
   const [ questions, setQuestions ] = useState(data.results);
   const [ currentIndex, setCurrentIndex ] = useState(1);
@@ -30,10 +31,18 @@ const Quiz = () => {
     return newArray;
   }
   
-  function routeBackHome() {
+  const routeBackHome = () => {
     navigate('/');
     dispatch(setNumberOfQuestions({ number: 10 }));
     dispatch(clearQuestions());
+  }
+
+  const answerClickHandler = (answer) => {
+    if(answer === currentQuestion.correct_answer) {
+      console.log('izabrao si tačan odgovor');
+    } else {
+      console.log('izabrao si pogrešan odgovor');
+    }
   }
   
   return (
@@ -42,7 +51,12 @@ const Quiz = () => {
         <h3 className="question-text">{currentQuestion.question}</h3>
         <div className="answers-container">
           {answers && answers.map(answer => (
-            <span className="answer" key={answer}>{answer}</span>
+            <span 
+              className="answer"
+              key={answer}
+              onClick={() => answerClickHandler(answer)}>
+                {answer}
+            </span>
           ))}
         </div>
       </div>
