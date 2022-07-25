@@ -43,6 +43,9 @@ const Quiz = () => {
     } else {
       answerRefs.current[index].classList.add('wrong');
     }
+    setTimeout(() => {
+      setCurrentIndex(index => index + 1);
+    }, 1000)
   }
   
   return (
