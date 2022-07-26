@@ -51,6 +51,7 @@ const Quiz = () => {
   return (
     <main className="main">
       <div className="question-container">
+        <p className="question-number">1 / 10</p>
         <h3 className="question-text">{currentQuestion.question}</h3>
         <div className="answers-container">
           {answers && answers.map((answer, index) => (
