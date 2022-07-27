@@ -11,7 +11,7 @@ const Quiz = () => {
   const answerRefs = useRef([]);
 
   const [ questions, setQuestions ] = useState(data.results);
-  const [ currentIndex, setCurrentIndex ] = useState(1);
+  const [ currentIndex, setCurrentIndex ] = useState(0);
   const [ currentQuestion, setCurrentQuestion ] = useState(questions[currentIndex]);
   const [ answers, setAnswers ] = useState(null);
 
@@ -51,7 +51,7 @@ const Quiz = () => {
   return (
     <main className="main">
       <div className="question-container">
-        <p className="question-number">1 / 10</p>
+        <p className="current-question-number">{`${currentIndex + 1} / ${questions.length}`}</p>
         <h3 className="question-text">{currentQuestion.question}</h3>
         <div className="answers-container">
           {answers && answers.map((answer, index) => (
