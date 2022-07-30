@@ -1,7 +1,14 @@
 import { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router"; 
-import { setNumberOfQuestions, clearQuestions } from "../redux/slices/quizSlice";
 import { useDispatch } from "react-redux/es/exports"; 
+import { setNumberOfQuestions, clearQuestions } from "../redux/slices/quizSlice";
+import { 
+  increaseCorrectAnswers,
+  increaseIncorrectAnswers,
+  calculatePercentage,
+  resetValues
+} from "../redux/slices/playerSlice";
+
 import data from '../data.json'
 
 const Quiz = () => {
@@ -35,13 +42,16 @@ const Quiz = () => {
     navigate('/');
     dispatch(setNumberOfQuestions({ number: 10 }));
     dispatch(clearQuestions());
+    dispatch(resetValues());
   }
 
   const answerClickHandler = (answer, index) => {
     if(answer === currentQuestion.correct_answer) {
       answerRefs.current[index].classList.add('correct');
+      dispatch(increaseCorrectAnswers());
     } else {
       answerRefs.current[index].classList.add('wrong');
+      dispatch(increaseIncorrectAnswers());
     }
     setTimeout(() => {
       setCurrentIndex(index => index + 1);
