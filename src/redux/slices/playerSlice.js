@@ -20,6 +20,11 @@ const playerSlice = createSlice({
       state.correctAnswers = 0;
       state.incorrectAnswers = 0;
       state.percentage = 0;
+    },
+    calculatePercentage: (state, action) => {
+      const totalAnswers = state.correctAnswers + state.incorrectAnswers;
+      const percentage = (state.correctAnswers / totalAnswers) * 100;
+      state.percentage = percentage;
     }
   }
 });
@@ -27,7 +32,8 @@ const playerSlice = createSlice({
 export const { 
   increaseCorrectAnswers, 
   increaseIncorrectAnswers, 
-  resetValues 
+  resetValues,
+  calculatePercentage
 } = quizSlice.actions;
 
 export default playerSlice.reducer;
