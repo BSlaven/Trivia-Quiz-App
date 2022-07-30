@@ -15,10 +15,19 @@ const playerSlice = createSlice({
     },
     increaseIncorrectAnswers: (state, action) => {
       state.incorrectAnswers = state.incorrectAnswers + 1
+    },
+    resetValues: (state, action) => {
+      state.correctAnswers = 0;
+      state.incorrectAnswers = 0;
+      state.percentage = 0;
     }
   }
 });
 
-export const { increaseCorrectAnswers, increaseIncorrectAnswers } = quizSlice.actions;
+export const { 
+  increaseCorrectAnswers, 
+  increaseIncorrectAnswers, 
+  resetValues 
+} = quizSlice.actions;
 
 export default playerSlice.reducer;
