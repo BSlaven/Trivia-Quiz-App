@@ -16,15 +16,18 @@ const Quiz = () => {
   const dispatch = useDispatch();
   const answerRefs = useRef([]);
 
-  const { questions } = useSelector(store => store.quiz);
-  const [ currentIndex, setCurrentIndex ] = useState(0);
-  const [ currentQuestion, setCurrentQuestion ] = useState(questions[currentIndex]);
+  const { questions, selectedNumber } = useSelector(store => store.quiz);
+
   const [ answers, setAnswers ] = useState(null);
+  const [ currentIndex, setCurrentIndex ] = useState(0);
+
+  const [ currentQuestion, setCurrentQuestion ] = useState(questions[currentIndex]);
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await fetch('https://opentdb.com/api.php?amount=10');
+      const response = await fetch(`https://opentdb.com/api.php?amount=${selectedNumber}`);
       const resQuestions = await response.json();
+      console.log('Ovo su pitanja sa API-a: ', resQuestions.results)
       dispatch(setQuestions({ questions: resQuestions.results }))
     }
 
