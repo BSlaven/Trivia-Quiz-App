@@ -1,7 +1,12 @@
 import { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router"; 
 import { useDispatch, useSelector } from "react-redux/es/exports"; 
-import { setNumberOfQuestions, clearQuestions, setQuestions } from "../redux/slices/quizSlice";
+import { 
+  setNumberOfQuestions, 
+  clearQuestions,
+  setQuestions, 
+  setCurrentIndex,
+  setCurrentQuestion } from "../redux/slices/quizSlice";
 import { 
   increaseCorrectAnswers,
   increaseIncorrectAnswers,
@@ -16,35 +21,24 @@ const Quiz = () => {
   const dispatch = useDispatch();
   const answerRefs = useRef([]);
 
-  const { questions, selectedNumber } = useSelector(store => store.quiz);
+  const { questions, selectedNumber, currentQuestion } = useSelector(store => store.quiz);
 
   const [ answers, setAnswers ] = useState(null);
-  const [ currentIndex, setCurrentIndex ] = useState(0);
-
-  const [ currentQuestion, setCurrentQuestion ] = useState(questions[currentIndex]);
 
   useEffect(() => {
+    if(questions.length !== 0) return
     const fetchData = async () => {
       const response = await fetch(`https://opentdb.com/api.php?amount=${selectedNumber}`);
       const resQuestions = await response.json();
-      console.log('Ovo su pitanja sa API-a: ', resQuestions.results)
       dispatch(setQuestions({ questions: resQuestions.results }))
     }
 
     fetchData();
+
   }, []);
- 
-  useEffect(() => {
-    // setCurrentIndex(0);
-    // setCurrentQuestion(questions[0]);
-    console.log(questions)
-  }, [questions]);
 
   useEffect(() => {
-    setCurrentQuestion(questions[currentIndex]);
-  }, [currentIndex]);
-
-  useEffect(() => {
+    if(!currentQuestion.question) return;
     const allAnswers = combineAnswers(currentQuestion)
     setAnswers(allAnswers);
   }, [currentQuestion]);
