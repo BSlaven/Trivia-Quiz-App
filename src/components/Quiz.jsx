@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router"; 
-import { useDispatch } from "react-redux/es/exports"; 
-import { setNumberOfQuestions, clearQuestions } from "../redux/slices/quizSlice";
+import { useDispatch, useSelector } from "react-redux/es/exports"; 
+import { setNumberOfQuestions, clearQuestions, setQuestions } from "../redux/slices/quizSlice";
 import { 
   increaseCorrectAnswers,
   increaseIncorrectAnswers,
@@ -9,7 +9,6 @@ import {
   resetValues
 } from "../redux/slices/playerSlice";
 
-import data from '../data.json'
 
 const Quiz = () => {
 
@@ -17,15 +16,27 @@ const Quiz = () => {
   const dispatch = useDispatch();
   const answerRefs = useRef([]);
 
-  const [ questions, setQuestions ] = useState(data.results);
+  const { questions } = useSelector(store => store.quiz);
   const [ currentIndex, setCurrentIndex ] = useState(0);
   const [ currentQuestion, setCurrentQuestion ] = useState(questions[currentIndex]);
   const [ answers, setAnswers ] = useState(null);
 
-  // useEffect(() => {
-  //   dispatch();
-  // }, []);
+  useEffect(() => {
+    const fetchData = async () => {
+      const response = await fetch('https://opentdb.com/api.php?amount=10');
+      const resQuestions = await response.json();
+      dispatch(setQuestions({ questions: resQuestions.results }))
+    }
+
+    fetchData();
+  }, []);
  
+  useEffect(() => {
+    // setCurrentIndex(0);
+    // setCurrentQuestion(questions[0]);
+    console.log(questions)
+  }, [questions]);
+
   useEffect(() => {
     setCurrentQuestion(questions[currentIndex]);
   }, [currentIndex]);
@@ -65,8 +76,8 @@ const Quiz = () => {
   return (
     <main className="main">
       <div className="question-container">
-        <p className="current-question-number">{`${currentIndex + 1} / ${questions.length}`}</p>
-        <h3 className="question-text">{currentQuestion.question}</h3>
+        {/* <p className="current-question-number">{`${currentIndex + 1} / ${questions.length}`}</p> */}
+        <h3 className="question-text">{currentQuestion?.question}</h3>
         <div className="answers-container">
           {answers && answers.map((answer, index) => (
             <span 
