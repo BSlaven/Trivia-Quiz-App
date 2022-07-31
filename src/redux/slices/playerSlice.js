@@ -34,6 +34,6 @@ export const {
   increaseIncorrectAnswers, 
   resetValues,
   calculatePercentage
-} = quizSlice.actions;
+} = playerSlice.actions;
 
 export default playerSlice.reducer;
