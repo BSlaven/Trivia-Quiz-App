@@ -22,6 +22,10 @@ const Quiz = () => {
   const [ currentQuestion, setCurrentQuestion ] = useState(questions[currentIndex]);
   const [ answers, setAnswers ] = useState(null);
 
+  // useEffect(() => {
+  //   dispatch();
+  // }, []);
+ 
   useEffect(() => {
     setCurrentQuestion(questions[currentIndex]);
   }, [currentIndex]);
