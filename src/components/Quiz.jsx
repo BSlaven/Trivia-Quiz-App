@@ -1,7 +1,12 @@
 import { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router"; 
-import { useDispatch } from "react-redux/es/exports"; 
-import { setNumberOfQuestions, clearQuestions } from "../redux/slices/quizSlice";
+import { useDispatch, useSelector } from "react-redux/es/exports"; 
+import { 
+  setNumberOfQuestions, 
+  clearQuestions,
+  setQuestions, 
+  setCurrentIndex,
+  setCurrentQuestion } from "../redux/slices/quizSlice";
 import { 
   increaseCorrectAnswers,
   increaseIncorrectAnswers,
@@ -9,7 +14,6 @@ import {
   resetValues
 } from "../redux/slices/playerSlice";
 
-import data from '../data.json'
 
 const Quiz = () => {
 
@@ -17,16 +21,23 @@ const Quiz = () => {
   const dispatch = useDispatch();
   const answerRefs = useRef([]);
 
-  const [ questions, setQuestions ] = useState(data.results);
-  const [ currentIndex, setCurrentIndex ] = useState(0);
-  const [ currentQuestion, setCurrentQuestion ] = useState(questions[currentIndex]);
+  const { questions, selectedNumber, currentQuestion, currentIndex } = useSelector(store => store.quiz);
+
   const [ answers, setAnswers ] = useState(null);
 
   useEffect(() => {
-    setCurrentQuestion(questions[currentIndex]);
-  }, [currentIndex]);
+    if(questions.length !== 0) return
+    const fetchData = async () => {
+      const response = await fetch(`https://opentdb.com/api.php?amount=${selectedNumber}`);
+      const resQuestions = await response.json();
+      console.log('inside fetch')
+      dispatch(setQuestions({ questions: resQuestions.results }))
+    }
+    fetchData();
+  }, []);
 
   useEffect(() => {
+    if(!currentQuestion.question) return;
     const allAnswers = combineAnswers(currentQuestion)
     setAnswers(allAnswers);
   }, [currentQuestion]);
@@ -54,15 +65,16 @@ const Quiz = () => {
       dispatch(increaseIncorrectAnswers());
     }
     setTimeout(() => {
-      setCurrentIndex(index => index + 1);
+      dispatch(setCurrentIndex());
+      dispatch(setCurrentQuestion());
     }, 1000)
   }
   
   return (
     <main className="main">
       <div className="question-container">
-        <p className="current-question-number">{`${currentIndex + 1} / ${questions.length}`}</p>
-        <h3 className="question-text">{currentQuestion.question}</h3>
+        {questions && <p className="current-question-number">{`${currentIndex + 1} / ${questions.length}`}</p>}
+        <h3 className="question-text">{currentQuestion?.question}</h3>
         <div className="answers-container">
           {answers && answers.map((answer, index) => (
             <span 
