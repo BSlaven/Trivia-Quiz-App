@@ -21,7 +21,7 @@ const Quiz = () => {
   const dispatch = useDispatch();
   const answerRefs = useRef([]);
 
-  const { questions, selectedNumber, currentQuestion } = useSelector(store => store.quiz);
+  const { questions, selectedNumber, currentQuestion, currentIndex } = useSelector(store => store.quiz);
 
   const [ answers, setAnswers ] = useState(null);
 
@@ -30,11 +30,10 @@ const Quiz = () => {
     const fetchData = async () => {
       const response = await fetch(`https://opentdb.com/api.php?amount=${selectedNumber}`);
       const resQuestions = await response.json();
+      console.log('inside fetch')
       dispatch(setQuestions({ questions: resQuestions.results }))
     }
-
     fetchData();
-
   }, []);
 
   useEffect(() => {
@@ -66,14 +65,15 @@ const Quiz = () => {
       dispatch(increaseIncorrectAnswers());
     }
     setTimeout(() => {
-      setCurrentIndex(index => index + 1);
+      dispatch(setCurrentIndex());
+      dispatch(setCurrentQuestion());
     }, 1000)
   }
   
   return (
     <main className="main">
       <div className="question-container">
-        {/* <p className="current-question-number">{`${currentIndex + 1} / ${questions.length}`}</p> */}
+        {questions && <p className="current-question-number">{`${currentIndex + 1} / ${questions.length}`}</p>}
         <h3 className="question-text">{currentQuestion?.question}</h3>
         <div className="answers-container">
           {answers && answers.map((answer, index) => (

@@ -21,6 +21,8 @@ const quizSlice = createSlice({
     },
     clearQuestions: (state) => {
       state.questions = [];
+      state.currentQuestion = {};
+      state.currentIndex = 0;
     },
     setCurrentQuestion: (state, action) => {
       state.currentQuestion = state.questions[state.currentIndex]
