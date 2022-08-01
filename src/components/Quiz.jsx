@@ -57,7 +57,6 @@ const Quiz = () => {
   }
 
   const answerClickHandler = (answer, index) => {
-    console.log(currentIndex)
     if(answer === currentQuestion.correct_answer) {
       answerRefs.current[index].classList.add('correct');
       dispatch(increaseCorrectAnswers());
@@ -65,14 +64,14 @@ const Quiz = () => {
       answerRefs.current[index].classList.add('wrong');
       dispatch(increaseIncorrectAnswers());
     }
-    if(questions.length === currentIndex + 1) {
-      console.log('the game is over')
-    } else {
-      setTimeout(() => {
-        dispatch(setCurrentIndex());
-        dispatch(setCurrentQuestion());
-      }, 1000)
-    }
+    setTimeout(() => {
+      if(questions.length === currentIndex + 1) {
+        console.log('game over');
+        return
+      }
+      dispatch(setCurrentIndex());
+      dispatch(setCurrentQuestion());
+    }, 1000)
   }
   
   return (
