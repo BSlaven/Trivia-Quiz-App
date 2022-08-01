@@ -26,14 +26,19 @@ const Quiz = () => {
   const [ answers, setAnswers ] = useState(null);
 
   useEffect(() => {
-    if(questions.length !== 0) return
+    let isMounted = true;
     const fetchData = async () => {
       const response = await fetch(`https://opentdb.com/api.php?amount=${selectedNumber}`);
       const resQuestions = await response.json();
-      console.log('inside fetch')
-      dispatch(setQuestions({ questions: resQuestions.results }))
+      if(isMounted) {
+        dispatch(setQuestions({ questions: resQuestions.results }))        
+      }
     }
     fetchData();
+
+    return () => {
+      isMounted = false;
+    }
   }, []);
 
   useEffect(() => {
