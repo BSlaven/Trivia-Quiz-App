@@ -67,6 +67,8 @@ const Quiz = () => {
       dispatch(increaseCorrectAnswers());
     } else {
       answerRefs.current[index].classList.add('wrong');
+      const correct = answerRefs.current.find(answer => answer.textContent === currentQuestion.correct_answer);
+      correct.classList.add('correct');
       dispatch(increaseIncorrectAnswers());
     }
     setTimeout(() => {
@@ -76,7 +78,7 @@ const Quiz = () => {
       }
       dispatch(setCurrentIndex());
       dispatch(setCurrentQuestion());
-    }, 1000)
+    }, 1500)
   }
   
   return (
