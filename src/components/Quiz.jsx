@@ -54,7 +54,7 @@ const Quiz = () => {
     return newArray;
   }
   
-  const routeBackHome = () => {
+  const quitAndReset = () => {
     navigate('/');
     dispatch(setNumberOfQuestions({ number: 10 }));
     dispatch(clearQuestions());
@@ -98,7 +98,7 @@ const Quiz = () => {
           ))}
         </div>
       </div>
-      <button className="quit-btn" onClick={routeBackHome}>quit</button>
+      <button className="quit-btn" onClick={quitAndReset}>quit</button>
     </main>
   )
 }
