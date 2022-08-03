@@ -1,10 +1,19 @@
 import { useNavigate } from "react-router"; 
-import { useSelector } from "react-redux/es/exports";
+import { useSelector, useDispatch } from "react-redux/es/exports";
+import { clearQuestions } from "../redux/slices/quizSlice";
+import { resetValues } from "../redux/slices/playerSlice";
 
 const Stats = () => {
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const { correctAnswers, incorrectAnswers, percentage } = useSelector(store => store.player);
+
+  const resetAndGoBackHome = () => {
+    navigate('/');
+    dispatch(resetValues());
+    dispatch(clearQuestions());
+  }
   
   return (
     <section className='stats-container'>
@@ -20,7 +29,7 @@ const Stats = () => {
         <h3>Percentage</h3>
         <p>{percentage}</p>
       </div>
-      <button>Back Home</button>
+      <button onClick={resetAndGoBackHome}>Back Home</button>
     </section>
   )
 }

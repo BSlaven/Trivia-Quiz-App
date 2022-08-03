@@ -73,7 +73,8 @@ const Quiz = () => {
     }
     setTimeout(() => {
       if(questions.length === currentIndex + 1) {
-        console.log('game over');
+        dispatch(calculatePercentage());
+        navigate('/stats');
         return
       }
       dispatch(setCurrentIndex());
