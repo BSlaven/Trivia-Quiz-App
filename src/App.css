@@ -161,3 +161,35 @@
 .answer.wrong {
   outline: 2px solid red;
 }
+
+/* stats */
+.stats-container {
+  width: 100%;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1.5rem;
+  text-align: center;
+}
+
+.stats-container button {
+  border: none;
+  font-size: 1.3rem;
+  
+}
+
+.stats-control {
+  width: 100%;
+  color: #333;
+}
+
+.stats-control h3 {
+  font-size: 1.6rem;
+}
+
+.stats-control p {
+  font-size: 1.3rem;
+}
+
