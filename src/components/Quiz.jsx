@@ -79,6 +79,10 @@ const Quiz = () => {
       }
       dispatch(setCurrentIndex());
       dispatch(setCurrentQuestion());
+      [...answerRefs.current].forEach(elem => {
+        elem.classList.remove('correct');
+        elem.classList.remove('wrong');
+      })
     }, 1500)
   }
   
