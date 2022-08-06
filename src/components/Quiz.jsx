@@ -1,6 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router"; 
 import { useDispatch, useSelector } from "react-redux/es/exports"; 
+import he from 'he';
 import { 
   setNumberOfQuestions, 
   clearQuestions,
@@ -13,7 +14,6 @@ import {
   calculatePercentage,
   resetValues
 } from "../redux/slices/playerSlice";
-
 
 const Quiz = () => {
 
@@ -29,6 +29,7 @@ const Quiz = () => {
     let isMounted = true;
     const fetchData = async () => {
       const response = await fetch(`https://opentdb.com/api.php?amount=${selectedNumber}`);
+      // const response = await fetch(`https://opentdb.com/api.php?amount=${selectedNumber}&type=boolean`);
       const resQuestions = await response.json();
       if(isMounted) {
         dispatch(setQuestions({ questions: resQuestions.results }))        
@@ -48,8 +49,12 @@ const Quiz = () => {
   }, [currentQuestion]);
 
   const combineAnswers = ({ correct_answer, incorrect_answers }) => {
-    const newArray = [...incorrect_answers];
-    newArray.push(correct_answer);
+    const newArray = [...incorrect_answers].map(answer => {
+      return {
+        answer, correct: false
+      }
+    });
+    newArray.push({ answer: correct_answer, correct: true });
     newArray.sort(() => (Math.random() > 0.5 ? 1 : -1));
     return newArray;
   }
@@ -61,8 +66,8 @@ const Quiz = () => {
     dispatch(resetValues());
   }
 
-  const answerClickHandler = (answer, index) => {
-    if(answer === currentQuestion.correct_answer) {
+  const answerClickHandler = (correct, index) => {
+    if(correct) {
       answerRefs.current[index].classList.add('correct');
       dispatch(increaseCorrectAnswers());
     } else {
@@ -72,6 +77,12 @@ const Quiz = () => {
       dispatch(increaseIncorrectAnswers());
     }
     setTimeout(() => {
+      [...answerRefs.current].forEach(elem => {
+        if(elem) {
+          elem.classList.remove('correct');
+          elem.classList.remove('wrong');
+        }
+      })
       if(questions.length === currentIndex + 1) {
         dispatch(calculatePercentage());
         navigate('/stats');
@@ -79,10 +90,6 @@ const Quiz = () => {
       }
       dispatch(setCurrentIndex());
       dispatch(setCurrentQuestion());
-      [...answerRefs.current].forEach(elem => {
-        elem.classList.remove('correct');
-        elem.classList.remove('wrong');
-      })
     }, 1500)
   }
   
@@ -90,15 +97,16 @@ const Quiz = () => {
     <main className="main">
       <div className="question-container">
         {questions && <p className="current-question-number">{`${currentIndex + 1} / ${questions.length}`}</p>}
-        <h3 className="question-text">{currentQuestion?.question}</h3>
+        {currentQuestion && <h3 className="question-text">{currentQuestion?.question}</h3>}
         <div className="answers-container">
           {answers && answers.map((answer, index) => (
             <span 
               className="answer"
+              name={answer.correct ? 'true' : 'false'}
               ref={el => answerRefs.current[index] = el}
-              key={answer}
-              onClick={() => answerClickHandler(answer, index)}>
-                {answer}
+              key={answer.answer}
+              onClick={() => answerClickHandler(answer.correct, index)}>
+                {he.decode(answer.answer)}
             </span>
           ))}
         </div>
