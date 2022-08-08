@@ -76,6 +76,10 @@ const Quiz = () => {
       correct.classList.add('correct');
       dispatch(increaseIncorrectAnswers());
     }
+    cleanupAndNextQuestion();
+  }
+
+  const cleanupAndNextQuestion = () => {
     setTimeout(() => {
       [...answerRefs.current].forEach(elem => {
         if(elem) {
