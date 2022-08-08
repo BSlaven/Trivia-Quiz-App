@@ -100,7 +100,7 @@ const Quiz = () => {
     <main className="main">
       <div className="question-container">
         {questions && <p className="current-question-number">{`${currentIndex + 1} / ${questions.length}`}</p>}
-        {currentQuestion && <h3 className="question-text">{currentQuestion?.question}</h3>}
+        {currentQuestion.question && <h3 className="question-text">{he.decode(currentQuestion.question)}</h3>}
         <div className="answers-container">
           {answers && answers.map((answer, index) => (
             <span 
