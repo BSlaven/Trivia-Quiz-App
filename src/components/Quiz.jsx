@@ -72,7 +72,7 @@ const Quiz = () => {
       dispatch(increaseCorrectAnswers());
     } else {
       answerRefs.current[index].classList.add('wrong');
-      const correct = answerRefs.current.find(answer => answer.textContent === currentQuestion.correct_answer);
+      const correct = answerRefs.current.find(answer => answer.getAttribute('name') === 'true');
       correct.classList.add('correct');
       dispatch(increaseIncorrectAnswers());
     }
