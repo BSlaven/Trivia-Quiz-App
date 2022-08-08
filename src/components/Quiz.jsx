@@ -29,7 +29,6 @@ const Quiz = () => {
     let isMounted = true;
     const fetchData = async () => {
       const response = await fetch(`https://opentdb.com/api.php?amount=${selectedNumber}`);
-      // const response = await fetch(`https://opentdb.com/api.php?amount=${selectedNumber}&type=boolean`);
       const resQuestions = await response.json();
       if(isMounted) {
         dispatch(setQuestions({ questions: resQuestions.results }))        
