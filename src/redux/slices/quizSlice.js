@@ -5,6 +5,7 @@ const initialState = {
   selectedNumber: 10,
   questions: [],
   currentQuestion: {},
+  answers: [],
   currentIndex: 0
 }
 
@@ -13,8 +14,13 @@ const quizSlice = createSlice({
   initialState,
   reducers: {
     setQuestions: (state, action) => {
+      if(state.questions.length > 0) return;
       state.questions = action.payload.questions;
-      state.currentQuestion = state.questions[state.currentIndex]
+      state.currentQuestion = state.questions[state.currentIndex];
+      state.answers = [...state.currentQuestion.incorrect_answers]
+        .map(answer => ({ answer, correct: false }));
+      state.answers.push({ answer: state.currentQuestion.correct_answer, correct: true })
+      state.answers = state.answers.sort(() => (Math.random() > 0.5 ? 1 : -1));
     },
     setNumberOfQuestions: (state, action) => {
       state.selectedNumber = action.payload.number;
@@ -23,6 +29,7 @@ const quizSlice = createSlice({
       state.questions = [];
       state.currentQuestion = {};
       state.currentIndex = 0;
+      state.answers = []
     },
     setCurrentQuestion: (state, action) => {
       state.currentQuestion = state.questions[state.currentIndex]

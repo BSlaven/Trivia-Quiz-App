@@ -17,20 +17,20 @@ import {
 
 const Quiz = () => {
 
+  console.count('Quiz app has rendered')
+  
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const answerRefs = useRef([]);
 
-  const { questions, selectedNumber, currentQuestion, currentIndex } = useSelector(store => store.quiz);
-
-  const [ answers, setAnswers ] = useState(null);
+  const { answers, questions, selectedNumber, currentQuestion, currentIndex } = useSelector(store => store.quiz);
 
   useEffect(() => {
     let isMounted = true;
     const fetchData = async () => {
-      const response = await fetch(`https://opentdb.com/api.php?amount=${selectedNumber}`);
-      const resQuestions = await response.json();
       if(isMounted) {
+        const response = await fetch(`https://opentdb.com/api.php?amount=${selectedNumber}`);
+        const resQuestions = await response.json();
         dispatch(setQuestions({ questions: resQuestions.results }))        
       }
     }
@@ -41,22 +41,22 @@ const Quiz = () => {
     }
   }, []);
 
-  useEffect(() => {
-    if(!currentQuestion.question) return;
-    const allAnswers = combineAnswers(currentQuestion)
-    setAnswers(allAnswers);
-  }, [currentQuestion]);
+  // useEffect(() => {
+  //   if(!currentQuestion.question) return;
+  //   const allAnswers = combineAnswers(currentQuestion)
+  //   setAnswers(allAnswers);
+  // }, [currentQuestion]);
 
-  const combineAnswers = ({ correct_answer, incorrect_answers }) => {
-    const newArray = [...incorrect_answers].map(answer => {
-      return {
-        answer, correct: false
-      }
-    });
-    newArray.push({ answer: correct_answer, correct: true });
-    newArray.sort(() => (Math.random() > 0.5 ? 1 : -1));
-    return newArray;
-  }
+  // const combineAnswers = ({ correct_answer, incorrect_answers }) => {
+  //   const newArray = [...incorrect_answers].map(answer => {
+  //     return {
+  //       answer, correct: false
+  //     }
+  //   });
+  //   newArray.push({ answer: correct_answer, correct: true });
+  //   newArray.sort(() => (Math.random() > 0.5 ? 1 : -1));
+  //   return newArray;
+  // }
   
   const quitAndReset = () => {
     navigate('/');
