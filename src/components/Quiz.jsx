@@ -40,23 +40,6 @@ const Quiz = () => {
       isMounted = false;
     }
   }, []);
-
-  // useEffect(() => {
-  //   if(!currentQuestion.question) return;
-  //   const allAnswers = combineAnswers(currentQuestion)
-  //   setAnswers(allAnswers);
-  // }, [currentQuestion]);
-
-  // const combineAnswers = ({ correct_answer, incorrect_answers }) => {
-  //   const newArray = [...incorrect_answers].map(answer => {
-  //     return {
-  //       answer, correct: false
-  //     }
-  //   });
-  //   newArray.push({ answer: correct_answer, correct: true });
-  //   newArray.sort(() => (Math.random() > 0.5 ? 1 : -1));
-  //   return newArray;
-  // }
   
   const quitAndReset = () => {
     navigate('/');
