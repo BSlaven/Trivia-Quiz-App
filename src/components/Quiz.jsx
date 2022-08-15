@@ -31,7 +31,7 @@ const Quiz = () => {
       if(isMounted) {
         const response = await fetch(`https://opentdb.com/api.php?amount=${selectedNumber}`);
         const resQuestions = await response.json();
-        dispatch(setQuestions({ questions: resQuestions.results }))        
+        dispatch(setQuestions({ questions: resQuestions.results }))
       }
     }
     fetchData();

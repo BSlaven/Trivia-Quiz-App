@@ -18,7 +18,7 @@ const quizSlice = createSlice({
       state.questions = action.payload.questions;
       state.currentQuestion = state.questions[state.currentIndex];
       state.answers = [...state.currentQuestion.incorrect_answers]
-        .map(answer => ({ answer, correct: false }));
+      .map(answer => ({ answer, correct: false }));
       state.answers.push({ answer: state.currentQuestion.correct_answer, correct: true })
       state.answers = state.answers.sort(() => (Math.random() > 0.5 ? 1 : -1));
     },
@@ -33,6 +33,10 @@ const quizSlice = createSlice({
     },
     setCurrentQuestion: (state, action) => {
       state.currentQuestion = state.questions[state.currentIndex]
+      state.answers = [...state.currentQuestion.incorrect_answers]
+      .map(answer => ({ answer, correct: false }));
+      state.answers.push({ answer: state.currentQuestion.correct_answer, correct: true })
+      state.answers = state.answers.sort(() => (Math.random() > 0.5 ? 1 : -1));
     },
     setCurrentIndex: (state, action) => {
       state.currentIndex = state.currentIndex + 1
@@ -45,7 +49,7 @@ export const {
   clearQuestions, 
   setQuestions,
   setCurrentIndex,
-  setCurrentQuestion
+  setCurrentQuestion,
 } = quizSlice.actions;
 
 export default quizSlice.reducer;
