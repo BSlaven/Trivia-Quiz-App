@@ -15,10 +15,10 @@ import {
   resetValues
 } from "../redux/slices/playerSlice";
 
+import Answer from "./Answer";
+
 const Quiz = () => {
 
-  console.count('Quiz app has rendered')
-  
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const answerRefs = useRef([]);
@@ -86,14 +86,17 @@ const Quiz = () => {
         {currentQuestion.question && <h3 className="question-text">{he.decode(currentQuestion.question)}</h3>}
         <div className="answers-container">
           {answers && answers.map((answer, index) => (
-            <span 
-              className="answer"
-              name={answer.correct ? 'true' : 'false'}
-              ref={el => answerRefs.current[index] = el}
-              key={answer.answer}
-              onClick={() => answerClickHandler(answer.correct, index)}>
+            <>
+              <Answer answer={answer} />
+              <span 
+                className="answer"
+                name={answer.correct ? 'true' : 'false'}
+                ref={el => answerRefs.current[index] = el}
+                key={answer.answer}
+                onClick={() => answerClickHandler(answer.correct, index)}>
                 {he.decode(answer.answer)}
-            </span>
+              </span>
+            </>
           ))}
         </div>
       </div>
