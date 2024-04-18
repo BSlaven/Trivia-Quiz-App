@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { setCurrentQuestionStatus } from "../redux/slices/quizSlice";
-import { useDispatch } from "react-redux";
+import { setCurrentQuestionStatus, setCurrentIndex, setCurrentQuestion } from "../redux/slices/quizSlice";
+import { useDispatch, useSelector } from "react-redux";
 
 const Answer = ({ answer }) => {
 
@@ -12,19 +12,20 @@ const Answer = ({ answer }) => {
   const dispatch = useDispatch();
 
   const answerClickHandler = e => {
-    const { isCorrect } = e.target;
-    
+
     // setIsSelected(true);
-    setAnswerClasses(isCorrect ? 'answer correct' : 'answer wrong')
+    setAnswerClasses(answer.correct ? 'answer correct' : 'answer wrong')
     
     dispatch(setCurrentQuestionStatus());
-    
+    setTimeout(() => {
+      dispatch(setCurrentIndex());
+      dispatch(setCurrentQuestion());
+    }, 1000)
   }
 
   
   return (
     <span
-      isCorrect={answer.correct}
       className={answerClasses}
       name={answer.correct ? 'true' : 'false'}
       onClick={(e) => answerClickHandler(e)}
