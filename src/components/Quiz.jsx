@@ -87,15 +87,7 @@ const Quiz = () => {
         <div className="answers-container">
           {answers && answers.map((answer, index) => (
             <>
-              <Answer answer={answer} />
-              <span 
-                className="answer"
-                name={answer.correct ? 'true' : 'false'}
-                ref={el => answerRefs.current[index] = el}
-                key={answer.answer}
-                onClick={() => answerClickHandler(answer.correct, index)}>
-                {he.decode(answer.answer)}
-              </span>
+              <Answer answer={answer} key={answer.answer} />
             </>
           ))}
         </div>
