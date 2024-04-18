@@ -26,6 +26,9 @@ const quizSlice = createSlice({
     setNumberOfQuestions: (state, action) => {
       state.selectedNumber = action.payload.number;
     },
+    setCurrentQuestionStatus: (state, action) => {
+      state.currentQuestion.isAnswered = true
+    },
     clearQuestions: (state) => {
       state.questions = [];
       state.currentQuestion = {};
