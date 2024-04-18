@@ -12,7 +12,7 @@ const Answer = ({ answer }) => {
       name={answer.correct ? 'true' : 'false'}
       onClick={() => answerClickHandler(answer.correct, index)}
     >
-      {he.decode(answer.answer)} 
+      {answer.answer}
     </span>
   )
 }

@@ -31,7 +31,14 @@ const Quiz = () => {
       if(isMounted) {
         const response = await fetch(`https://the-trivia-api.com/v2/questions?limit=${selectedNumber}`);
         const resQuestions = await response.json();
-        // dispatch(setQuestions({ questions: resQuestions.results }))
+        const mappedQuestions = resQuestions.map(question => ({
+          question: question.question.text,
+          correctAnswer: question.correctAnswer,
+          incorrectAnswers: question.incorrectAnswers,
+          id: question.id
+        }))
+
+        dispatch(setQuestions({ questions: mappedQuestions }))
       }
     }
     fetchData();
@@ -83,11 +90,11 @@ const Quiz = () => {
     <main className="main">
       <div className="question-container">
         {questions && <p className="current-question-number">{`${currentIndex + 1} / ${questions.length}`}</p>}
-        {currentQuestion.question && <h3 className="question-text">{he.decode(currentQuestion.question)}</h3>}
+        {currentQuestion.question && <h3 className="question-text">{currentQuestion.question}</h3>}
         <div className="answers-container">
           {answers && answers.map((answer, index) => (
             <>
-              <Answer answer={answer} key={answer.answer} />
+              <Answer answer={answer} key={answer} />
             </>
           ))}
         </div>
