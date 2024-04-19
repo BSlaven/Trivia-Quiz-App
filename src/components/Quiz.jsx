@@ -23,7 +23,24 @@ const Quiz = () => {
   const dispatch = useDispatch();
   const answerRefs = useRef([]);
 
-  const { answers, questions, selectedNumber, currentQuestion, currentIndex } = useSelector(store => store.quiz);
+  const {  questions, selectedNumber } = useSelector(store => store.quiz);
+
+  const [ currentIndex, setCurrentIndex ] = useState(0);
+  const currentQuestion = questions[currentIndex];
+
+  const correctAnswer = { answer: currentQuestion?.correctAnswer, correct: true }
+  const incorrectAnswers = currentQuestion?.incorrectAnswers.map(answer => {
+    return {
+      answer: answer,
+      correct: false
+    }
+  })
+
+  const answers = [correctAnswer, ...incorrectAnswers ];
+
+  const increaseIndexByOne = () => {
+    setCurrentIndex(prevIndex => prevIndex + 1);
+  }
 
   useEffect(() => {
     let isMounted = true;
@@ -68,33 +85,33 @@ const Quiz = () => {
     cleanupAndNextQuestion();
   }
 
-  const cleanupAndNextQuestion = () => {
-    setTimeout(() => {
-      [...answerRefs.current].forEach(elem => {
-        if(elem) {
-          elem.classList.remove('correct');
-          elem.classList.remove('wrong');
-        }
-      })
-      if(questions.length === currentIndex + 1) {
-        dispatch(calculatePercentage());
-        navigate('/stats');
-        return
-      }
-      dispatch(setCurrentIndex());
-      dispatch(setCurrentQuestion());
-    }, 1500)
-  }
+  // const cleanupAndNextQuestion = () => {
+  //   setTimeout(() => {
+  //     [...answerRefs.current].forEach(elem => {
+  //       if(elem) {
+  //         elem.classList.remove('correct');
+  //         elem.classList.remove('wrong');
+  //       }
+  //     })
+  //     if(questions.length === currentIndex + 1) {
+  //       dispatch(calculatePercentage());
+  //       navigate('/stats');
+  //       return
+  //     }
+  //     dispatch(setCurrentIndex());
+  //     dispatch(setCurrentQuestion());
+  //   }, 1500)
+  // }
   
   return (
     <main className="main">
       <div className="question-container">
         {questions && <p className="current-question-number">{`${currentIndex + 1} / ${questions.length}`}</p>}
-        {currentQuestion.question && <h3 className="question-text">{currentQuestion.question}</h3>}
+        {currentQuestion?.question && <h3 className="question-text">{currentQuestion?.question}</h3>}
         <div className="answers-container">
           {answers && answers.map((answer, index) => (
             <>
-              <Answer answer={answer} key={answer} />
+              <Answer answer={answer} key={answer} increaseIndexByOne={increaseIndexByOne} />
             </>
           ))}
         </div>
