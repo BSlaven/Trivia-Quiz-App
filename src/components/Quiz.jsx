@@ -15,23 +15,47 @@ import {
   resetValues
 } from "../redux/slices/playerSlice";
 
+import Answer from "./Answer";
+
 const Quiz = () => {
 
-  console.count('Quiz app has rendered')
-  
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const answerRefs = useRef([]);
 
-  const { answers, questions, selectedNumber, currentQuestion, currentIndex } = useSelector(store => store.quiz);
+  const {  questions, selectedNumber } = useSelector(store => store.quiz);
+
+  const [ currentIndex, setCurrentIndex ] = useState(0);
+  const currentQuestion = questions[currentIndex];
+
+  const correctAnswer = { answer: currentQuestion?.correctAnswer, correct: true }
+  const incorrectAnswers = currentQuestion?.incorrectAnswers.map(answer => {
+    return {
+      answer: answer,
+      correct: false
+    }
+  })
+
+  const answers = [correctAnswer, ...incorrectAnswers ];
+
+  const increaseIndexByOne = () => {
+    setCurrentIndex(prevIndex => prevIndex + 1);
+  }
 
   useEffect(() => {
     let isMounted = true;
     const fetchData = async () => {
       if(isMounted) {
-        const response = await fetch(`https://opentdb.com/api.php?amount=${selectedNumber}`);
+        const response = await fetch(`https://the-trivia-api.com/v2/questions?limit=${selectedNumber}`);
         const resQuestions = await response.json();
-        dispatch(setQuestions({ questions: resQuestions.results }))
+        const mappedQuestions = resQuestions.map(question => ({
+          question: question.question.text,
+          correctAnswer: question.correctAnswer,
+          incorrectAnswers: question.incorrectAnswers,
+          id: question.id
+        }))
+
+        dispatch(setQuestions({ questions: mappedQuestions }))
       }
     }
     fetchData();
@@ -61,39 +85,34 @@ const Quiz = () => {
     cleanupAndNextQuestion();
   }
 
-  const cleanupAndNextQuestion = () => {
-    setTimeout(() => {
-      [...answerRefs.current].forEach(elem => {
-        if(elem) {
-          elem.classList.remove('correct');
-          elem.classList.remove('wrong');
-        }
-      })
-      if(questions.length === currentIndex + 1) {
-        dispatch(calculatePercentage());
-        navigate('/stats');
-        return
-      }
-      dispatch(setCurrentIndex());
-      dispatch(setCurrentQuestion());
-    }, 1500)
-  }
+  // const cleanupAndNextQuestion = () => {
+  //   setTimeout(() => {
+  //     [...answerRefs.current].forEach(elem => {
+  //       if(elem) {
+  //         elem.classList.remove('correct');
+  //         elem.classList.remove('wrong');
+  //       }
+  //     })
+  //     if(questions.length === currentIndex + 1) {
+  //       dispatch(calculatePercentage());
+  //       navigate('/stats');
+  //       return
+  //     }
+  //     dispatch(setCurrentIndex());
+  //     dispatch(setCurrentQuestion());
+  //   }, 1500)
+  // }
   
   return (
     <main className="main">
       <div className="question-container">
         {questions && <p className="current-question-number">{`${currentIndex + 1} / ${questions.length}`}</p>}
-        {currentQuestion.question && <h3 className="question-text">{he.decode(currentQuestion.question)}</h3>}
+        {currentQuestion?.question && <h3 className="question-text">{currentQuestion?.question}</h3>}
         <div className="answers-container">
           {answers && answers.map((answer, index) => (
-            <span 
-              className="answer"
-              name={answer.correct ? 'true' : 'false'}
-              ref={el => answerRefs.current[index] = el}
-              key={answer.answer}
-              onClick={() => answerClickHandler(answer.correct, index)}>
-                {he.decode(answer.answer)}
-            </span>
+            <>
+              <Answer answer={answer} key={answer} increaseIndexByOne={increaseIndexByOne} />
+            </>
           ))}
         </div>
       </div>
