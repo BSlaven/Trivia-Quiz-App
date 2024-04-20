@@ -71,37 +71,6 @@ const Quiz = () => {
     dispatch(clearQuestions());
     dispatch(resetValues());
   }
-
-  const answerClickHandler = (correct, index) => {
-    if(correct) {
-      answerRefs.current[index].classList.add('correct');
-      dispatch(increaseCorrectAnswers());
-    } else {
-      answerRefs.current[index].classList.add('wrong');
-      const correct = answerRefs.current.find(answer => answer.getAttribute('name') === 'true');
-      correct.classList.add('correct');
-      dispatch(increaseIncorrectAnswers());
-    }
-    cleanupAndNextQuestion();
-  }
-
-  // const cleanupAndNextQuestion = () => {
-  //   setTimeout(() => {
-  //     [...answerRefs.current].forEach(elem => {
-  //       if(elem) {
-  //         elem.classList.remove('correct');
-  //         elem.classList.remove('wrong');
-  //       }
-  //     })
-  //     if(questions.length === currentIndex + 1) {
-  //       dispatch(calculatePercentage());
-  //       navigate('/stats');
-  //       return
-  //     }
-  //     dispatch(setCurrentIndex());
-  //     dispatch(setCurrentQuestion());
-  //   }, 1500)
-  // }
   
   return (
     <main className="main">
@@ -111,7 +80,7 @@ const Quiz = () => {
         <div className="answers-container">
           {answers && answers.map((answer, index) => (
             <>
-              <Answer answer={answer} key={answer} increaseIndexByOne={increaseIndexByOne} />
+              <Answer answer={answer} isLastQuestion={(index + 1 === questions.length)} key={answer} increaseIndexByOne={increaseIndexByOne} />
             </>
           ))}
         </div>

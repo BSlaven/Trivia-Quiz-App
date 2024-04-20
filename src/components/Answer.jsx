@@ -1,12 +1,14 @@
-import { useState, useRef } from "react";
-import { setCurrentQuestionStatus, setCurrentIndex, setCurrentQuestion } from "../redux/slices/quizSlice";
-import { useDispatch, useSelector } from "react-redux";
+import { calculatePercentage, increaseCorrectAnswers, increaseIncorrectAnswers } from "../redux/slices/playerSlice";
 
-const Answer = ({ answer, increaseIndexByOne }) => {
-
-  const answerRef = useRef();
+const Answer = ({ answer, increaseIndexByOne, isLastQuestion }) => {
 
   const answerClickHandler = (e, correct) => {
+
+    correct ? increaseCorrectAnswers() : increaseIncorrectAnswers()
+    if(isLastQuestion) {
+      // call percentage calculation function
+      calculatePercentage();
+    }
 
     e.target.classList.add(`${correct ? 'correct' : 'wrong'}`);
 
@@ -19,7 +21,6 @@ const Answer = ({ answer, increaseIndexByOne }) => {
   
   return (
     <span
-      ref={answerRef}
       className='answer'
       name={answer.correct ? 'true' : 'false'}
       onClick={(e) => answerClickHandler(e, answer.correct)}
