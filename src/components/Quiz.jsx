@@ -1,7 +1,6 @@
 import { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router"; 
 import { useDispatch, useSelector } from "react-redux/es/exports"; 
-import he from 'he';
 import { 
   setNumberOfQuestions, 
   clearQuestions,
@@ -10,7 +9,6 @@ import {
 import { 
   calculatePercentage,
   resetValues,
-  percentage
 } from "../redux/slices/playerSlice";
 
 import Answer from "./Answer";
@@ -20,8 +18,9 @@ const Quiz = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const {  questions, selectedNumber } = useSelector(store => store.quiz);
-
+  const { questions, selectedNumber } = useSelector(store => store.quiz);
+  const { percentage } = useSelector(store => store.player);
+  
   const [ currentIndex, setCurrentIndex ] = useState(0);
   const currentQuestion = questions[currentIndex];
 
@@ -47,6 +46,10 @@ const Quiz = () => {
     if(currentIndex === 0) return
     endGameHanlder();
   }, [percentage])
+  
+  useEffect(() => {
+    endGameHanlder();
+  }, [questions])
 
   useEffect(() => {
     let isMounted = true;
@@ -60,6 +63,8 @@ const Quiz = () => {
           incorrectAnswers: question.incorrectAnswers,
           id: question.id
         }))
+
+        console.log(mappedQuestions);
 
         dispatch(setQuestions({ questions: mappedQuestions }))
       }
