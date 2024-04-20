@@ -5,15 +5,13 @@ const Answer = ({ answer, increaseIndexByOne, isLastQuestion }) => {
   const answerClickHandler = (e, correct) => {
 
     correct ? increaseCorrectAnswers() : increaseIncorrectAnswers()
-    if(isLastQuestion) {
-      // call percentage calculation function
-      calculatePercentage();
-    }
-
+    
     e.target.classList.add(`${correct ? 'correct' : 'wrong'}`);
 
     setTimeout(() => {
-      increaseIndexByOne();
+      if(!isLastQuestion) {
+        increaseIndexByOne();
+      }
       e.target.classList.remove(`${correct ? 'correct' : 'wrong'}`);
     }, 1000)
   }

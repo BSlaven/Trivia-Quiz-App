@@ -6,13 +6,11 @@ import {
   setNumberOfQuestions, 
   clearQuestions,
   setQuestions, 
-  setCurrentIndex,
-  setCurrentQuestion } from "../redux/slices/quizSlice";
+} from "../redux/slices/quizSlice";
 import { 
-  increaseCorrectAnswers,
-  increaseIncorrectAnswers,
   calculatePercentage,
-  resetValues
+  resetValues,
+  percentage
 } from "../redux/slices/playerSlice";
 
 import Answer from "./Answer";
@@ -21,7 +19,6 @@ const Quiz = () => {
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const answerRefs = useRef([]);
 
   const {  questions, selectedNumber } = useSelector(store => store.quiz);
 
@@ -41,6 +38,15 @@ const Quiz = () => {
   const increaseIndexByOne = () => {
     setCurrentIndex(prevIndex => prevIndex + 1);
   }
+
+  const endGameHanlder = () => {
+    dispatch(calculatePercentage())
+  }
+
+  useEffect(() => {
+    if(currentIndex === 0) return
+    endGameHanlder();
+  }, [percentage])
 
   useEffect(() => {
     let isMounted = true;
