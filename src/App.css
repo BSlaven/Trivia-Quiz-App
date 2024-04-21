@@ -87,9 +87,9 @@
   right: 1rem;
   border: none;
   border-radius: 3px;
-  outline: 2px solid hsl(348, 78%, 58%);
+  outline: 1px solid hsla(348, 78%, 58%, 0.5);
   outline-offset: -1px;
-  color: hsl(348, 78%, 58%);
+  color: hsla(348, 78%, 58%, 0.563);
   text-transform: uppercase;
   font-size: 0.9rem;
   font-weight: 600;
