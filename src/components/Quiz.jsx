@@ -43,7 +43,7 @@ const Quiz = () => {
   }, [currentQuestion])
   
   useEffect(() => {
-    setAllAnswers([correctAnswer, ...incorrectAnswers])
+    setAllAnswers([correctAnswer, ...incorrectAnswers].sort(() => (Math.random() > 0.5 ? 1 : -1)))
   }, [correctAnswer, incorrectAnswers])
 
   useEffect(() => {

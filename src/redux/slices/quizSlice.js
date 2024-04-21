@@ -13,16 +13,6 @@ const quizSlice = createSlice({
   name: 'quiz',
   initialState,
   reducers: {
-    setQuestions: (state, action) => {
-      if(state.questions.length > 0) return;
-      console.log(action.payload);
-      state.questions = action.payload.questions;
-      state.currentQuestion = state.questions[state.currentIndex];
-      state.answers = [...state.currentQuestion.incorrectAnswers]
-      .map(answer => ({ answer, correct: false }));
-      state.answers.push({ answer: state.currentQuestion.correctAnswer, correct: true })
-      state.answers = state.answers.sort(() => (Math.random() > 0.5 ? 1 : -1));
-    },
     setNumberOfQuestions: (state, action) => {
       state.selectedNumber = action.payload.number;
     },
