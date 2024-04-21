@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from "react-redux/es/exports";
 import { 
   setNumberOfQuestions, 
   clearQuestions,
-  setQuestions, 
 } from "../redux/slices/quizSlice";
 import { 
   calculatePercentage,
@@ -18,22 +17,16 @@ const Quiz = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const { questions, selectedNumber } = useSelector(store => store.quiz);
+  const { selectedNumber } = useSelector(store => store.quiz);
   const { percentage } = useSelector(store => store.player);
   
   const [ currentIndex, setCurrentIndex ] = useState(0);
-  const currentQuestion = questions[currentIndex];
-
-  const correctAnswer = { answer: currentQuestion?.correctAnswer, correct: true }
-  const incorrectAnswers = currentQuestion?.incorrectAnswers.map(answer => {
-    return {
-      answer: answer,
-      correct: false
-    }
-  })
-
-  const answers = [correctAnswer, ...incorrectAnswers ];
-
+  const [ questions, setQuestions ] = useState([]);
+  const [ correctAnswer, setCorrectAnswer ] = useState({});
+  const [ incorrectAnswers, setIncorrectAnswers ] = useState([])
+  const [ currentQuestion, setCurrentQuestion ] = useState(null)
+  const [ allAnswers, setAllAnswers ] = useState([])
+  
   const increaseIndexByOne = () => {
     setCurrentIndex(prevIndex => prevIndex + 1);
   }
@@ -46,6 +39,23 @@ const Quiz = () => {
     if(currentIndex === 0) return
     endGameHanlder();
   }, [percentage])
+
+  useEffect(() => {
+    if(currentQuestion == null) return;
+    setCorrectAnswer({answer: currentQuestion?.correctAnswer, correct: true});
+    setIncorrectAnswers(currentQuestion?.incorrectAnswers.map(answer => {
+      return { answer, correct: false }      
+    }));
+  }, [currentQuestion])
+  
+  useEffect(() => {
+    setAllAnswers([correctAnswer, ...incorrectAnswers])
+  }, [correctAnswer, incorrectAnswers])
+
+  useEffect(() => {
+    if(questions == null) return
+    setCurrentQuestion(questions[currentIndex]);
+  }, [currentIndex, questions])
   
   useEffect(() => {
     endGameHanlder();
@@ -64,9 +74,7 @@ const Quiz = () => {
           id: question.id
         }))
 
-        console.log(mappedQuestions);
-
-        dispatch(setQuestions({ questions: mappedQuestions }))
+          setQuestions(mappedQuestions)
       }
     }
     fetchData();
@@ -89,7 +97,7 @@ const Quiz = () => {
         {questions && <p className="current-question-number">{`${currentIndex + 1} / ${questions.length}`}</p>}
         {currentQuestion?.question && <h3 className="question-text">{currentQuestion?.question}</h3>}
         <div className="answers-container">
-          {answers && answers.map((answer, index) => (
+          {allAnswers && allAnswers.map((answer, index) => (
             <>
               <Answer answer={answer} isLastQuestion={(index + 1 === questions.length)} key={answer} increaseIndexByOne={increaseIndexByOne} />
             </>
