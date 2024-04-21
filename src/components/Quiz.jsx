@@ -93,7 +93,12 @@ const Quiz = () => {
         <div className="answers-container">
           {allAnswers && allAnswers.map((answer, index) => (
             <>
-              <Answer answer={answer} isLastQuestion={(index + 1 === questions.length)} key={answer} increaseIndexByOne={increaseIndexByOne} />
+              <Answer 
+                answer={answer}
+                isLastQuestion={(currentIndex + 1 === questions.length)}
+                key={answer}
+                increaseIndexByOne={increaseIndexByOne}
+              />
             </>
           ))}
         </div>
