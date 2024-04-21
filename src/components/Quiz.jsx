@@ -1,14 +1,8 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router"; 
 import { useDispatch, useSelector } from "react-redux/es/exports"; 
-import { 
-  setNumberOfQuestions, 
-  clearQuestions,
-} from "../redux/slices/quizSlice";
-import { 
-  calculatePercentage,
-  resetValues,
-} from "../redux/slices/playerSlice";
+import { setNumberOfQuestions } from "../redux/slices/quizSlice";
+import { calculatePercentage, resetValues } from "../redux/slices/playerSlice";
 
 import Answer from "./Answer";
 

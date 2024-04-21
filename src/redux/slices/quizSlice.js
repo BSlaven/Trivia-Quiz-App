@@ -26,24 +26,11 @@ const quizSlice = createSlice({
     setNumberOfQuestions: (state, action) => {
       state.selectedNumber = action.payload.number;
     },
-    setCurrentQuestionStatus: (state, action) => {
-      state.currentQuestion.isAnswered = true
-    },
     clearQuestions: (state) => {
       state.questions = [];
       state.currentQuestion = {};
       state.currentIndex = 0;
       state.answers = []
-    },
-    setCurrentQuestion: (state, action) => {
-      state.currentQuestion = state.questions[state.currentIndex]
-      state.answers = [...state.currentQuestion.incorrectAnswers]
-      .map(answer => ({ answer, correct: false }));
-      state.answers.push({ answer: state.currentQuestion.correctAnswer, correct: true })
-      state.answers = state.answers.sort(() => (Math.random() > 0.5 ? 1 : -1));
-    },
-    setCurrentIndex: (state, action) => {
-      state.currentIndex = state.currentIndex + 1
     }
   }
 })
@@ -52,9 +39,6 @@ export const {
   setNumberOfQuestions,
   clearQuestions, 
   setQuestions,
-  setCurrentIndex,
-  setCurrentQuestion,
-  setCurrentQuestionStatus,
 } = quizSlice.actions;
 
 export default quizSlice.reducer;
